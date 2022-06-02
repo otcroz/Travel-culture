@@ -1,9 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".RegisterActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입 하기"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="60dp"
+        android:textSize="32dp"/>
+
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="15dp"
+        android:padding="16dp"
+        android:background="@drawable/input_rectangle_box"
+        android:hint="닉네임"
+        android:inputType="text"
+        android:textSize="20dp"
+        android:visibility="gone"
+        android:elevation="4dp" />
+
+    <EditText
+        android:id="@+id/new_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="15dp"
+        android:padding="16dp"
+        android:background="@drawable/input_rectangle_box"
+        android:hint="새 이메일"
+        android:inputType="textWebEmailAddress"
+        android:textSize="20dp"
+        android:elevation="4dp" />
+
+    <EditText
+        android:id="@+id/input_newpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="15dp"
+        android:padding="16dp"
+        android:background="@drawable/input_rectangle_box"
+        android:hint="새 비밀번호: 6자 이상 입력해주세요."
+        android:inputType="textPassword"
+        android:textSize="20dp"
+        android:elevation="4dp" />
+
+    <EditText
+        android:id="@+id/check_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="15dp"
+        android:padding="16dp"
+        android:background="@drawable/input_rectangle_box"
+        android:hint="비밀번호 확인"
+        android:inputType="textPassword"
+        android:textSize="20dp"
+        android:elevation="4dp" />
+
+    <EditText
+        android:id="@+id/residence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="15dp"
+        android:padding="16dp"
+        android:background="@drawable/input_rectangle_box"
+        android:hint="거주 지역"
+        android:inputType="textPassword"
+        android:textSize="20dp"
+        android:visibility="gone"
+        android:elevation="4dp" />
+
+    <EditText
+        android:id="@+id/favorite_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="15dp"
+        android:padding="16dp"
+        android:background="@drawable/input_rectangle_box"
+        android:hint="관심 분야"
+        android:inputType="textPassword"
+        android:textSize="20dp"
+        android:visibility="gone"
+        android:elevation="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/next_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="70dp"
+        android:paddingVertical="10dp"
+        android:layout_marginBottom="70dp"
+        android:enabled="false"
+        android:text="다음으로"
+        android:textSize="24dp"
+        android:backgroundTint="#d3d3d3"/>
+
+    <Button
+        android:id="@+id/next_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="70dp"
+        android:paddingVertical="10dp"
+        android:layout_marginBottom="70dp"
+        android:enabled="false"
+        android:text="입력완료!"
+        android:textSize="24dp"
+        android:visibility="gone"
+        android:backgroundTint="#d3d3d3"/>
+
+</LinearLayout>
