@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:key="privacy"
+        app:title="개인정보 설정">
+        <EditTextPreference
+            app:key="username"
+            app:title="사용자 이름"
+            android:summary="사용자의 이름을 변경할 수 있습니다."
+            android:dialogTitle="사용자 이름 변경"/>
+        <MultiSelectListPreference
+            app:key="location"
+            app:title="나의 관심 지역 수정하기"
+            android:entries="@array/set_location"
+            android:entryValues="@array/set_location_value"/>
+        <MultiSelectListPreference
+            app:key="category"
+            app:title="나의 관심 분야 수정하기"
+            android:entries="@array/set_category"
+            android:entryValues="@array/set_location_value"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="notification"
+        app:title="알림 설정">
+        <SwitchPreference
+            app:key="noti_sound1"
+            app:title="지역별 문화 프로그램 추천 알림" />
+        <SwitchPreferenceCompat
+            app:key="noti_sound2"
+            app:title="오늘의 문화 프로그램 추천 알림" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="etc"
+        app:title="기타">
+        <SwitchPreference
+            app:key="set_night"
+            app:title="야간 모드 설정" />
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

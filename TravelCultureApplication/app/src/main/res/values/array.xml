@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="set_location">
+        <item>서울</item>
+        <item>경기</item>
+        <item>제주</item>
+    </string-array>
+    <string-array name="set_location_value">
+        <item>서울</item>
+        <item>경기</item>
+        <item>제주</item>
+    </string-array>
+
+    <string-array name="set_category">
+        <item>미술관</item>
+        <item>뮤지컬</item>
+        <item>전시회</item>
+    </string-array>
+    <string-array name="set_category_value">
+        <item>미술관</item>
+        <item>뮤지컬</item>
+        <item>전시회</item>
+    </string-array>
+</resources>
