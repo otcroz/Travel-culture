@@ -6,13 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.example.travelcultureapplicaiton.databinding.ActivityRegisterBinding
+import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
+    lateinit var binding : ActivityRegisterBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var binding = ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val nextButton = binding.nextSignIn
@@ -23,6 +28,9 @@ class RegisterActivity : AppCompatActivity() {
         val newEmail = binding.newEmail
         val inputNewpassword = binding.inputNewpassword
         val checkPassword = binding.checkPassword
+
+        // 로그인 인텐트
+        val intent = Intent(this, LoginActivity::class.java)
 
         //모든 EditText 값 > 0 일때 다음 화면으로 넘어가도록 한다.
         var textWatcher = object : TextWatcher {
@@ -74,10 +82,56 @@ class RegisterActivity : AppCompatActivity() {
 
 
         }
+        // 회원가입 완료
         nextSuccess.setOnClickListener {
             // db에 회원 정보 옮기는 작업 수행
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val email = binding.newEmail.text.toString()
+            val password = binding.inputNewpassword.text.toString()
+            MyApplication.auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    binding.newEmail.text.clear()
+                    binding.inputNewpassword.text.clear()
+                    if (task.isSuccessful) {
+                        MyApplication.auth.currentUser?.sendEmailVerification()
+                            ?.addOnCompleteListener { sendTask ->
+                                if (sendTask.isSuccessful) {
+                                    Toast.makeText(baseContext, "회원가입 성공!! 메일을 확인해주세요", Toast.LENGTH_SHORT).show()
+                                    startActivity(intent)
+                                    // 유저 정보 저장하기
+                                    saveStore()
+
+                                } else {
+                                    Toast.makeText(baseContext, "메일발송 실패", Toast.LENGTH_SHORT).show()
+                                    startActivity(intent)
+                                }
+                            }
+                    } else {
+                        Toast.makeText(baseContext, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                        startActivity(intent)
+                    }
+                }
+
+            //startActivity(intent)
         }
+    }
+
+    // 유저 정보 저장
+    private fun saveStore(){ // 이메일, 닉네임, 지역, 카테고리
+        val data = mapOf(
+            "email" to MyApplication.email, // read, write 권한을 가지도록 하기위해 설정
+            "nickname" to binding.inputName.text.toString(),
+            "residence" to binding.residence.text.toString(),
+            //"category" to 여러 개의 값을 받는다.
+
+        )
+
+        MyApplication.db.collection("user") // 이미지, 글에 대한 정보가 이 테이블에 저장
+            .add(data) // 데이터 업로드
+            .addOnSuccessListener{
+                Log.d("mobileApp", "data save success")
+            }
+            .addOnFailureListener{
+                Log.d("mobileApp", "data save error")
+            }
     }
 }
