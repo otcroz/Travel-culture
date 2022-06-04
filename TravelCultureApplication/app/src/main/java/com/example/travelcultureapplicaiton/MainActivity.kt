@@ -28,12 +28,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        // 가져온 유저 정보 프래그먼트에 옮기기
-//        var homeFragment = HomeFragment()
-//        var bundle = Bundle()
-//        bundle.putString("userData", intent.getStringExtra("userData").toString())
-//        homeFragment.arguments = bundle
-
         // 프래그먼트 연결하기
         supportFragmentManager.beginTransaction().add(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
 
@@ -49,9 +43,6 @@ class MainActivity : AppCompatActivity() {
             )
             true
         }
-
-
-
     }
 
 

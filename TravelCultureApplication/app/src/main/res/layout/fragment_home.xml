@@ -52,6 +52,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:text="사용자 이름"
+                            android:textFontWeight="900"
+                            android:fontFamily="@font/mapoflowerisland"
                             android:textSize="20dp"
                             android:textColor="#ffffff" />
                         <!--스크랩한 문화-->
@@ -67,6 +69,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="스크랩한 문화"
+                                android:textFontWeight="900"
+                                android:fontFamily="@font/mapoflowerisland"
                                 android:textSize="15dp"
                                 android:textColor="#ffffff"/>
                         </LinearLayout>
@@ -84,6 +88,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="스탬프 기록"
+                                android:textFontWeight="900"
+                                android:fontFamily="@font/mapoflowerisland"
                                 android:textSize="15dp"
                                 android:textColor="#ffffff"/>
                         </LinearLayout>
@@ -125,12 +131,16 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/font_main_color"
                     android:text="추천하는 오늘의 문화"
+                    android:fontFamily="@font/mapoflowerisland"
+                    android:textFontWeight="900"
                     android:textSize="30dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/font_sub_color"
                     android:text="날씨와 미세먼지 농도, 사용자 관심 분야 정보를 통해 오늘 체험하기 적절한 문화를 추천해드립니다."
+                    android:textFontWeight="900"
+                    android:fontFamily="@font/mapoflowerisland"
                     android:textSize="15dp"/>
 
                 <!--추천하는 문화 박스-->
@@ -186,12 +196,16 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/font_main_color"
                     android:text="지역 문화 알아가기"
+                    android:fontFamily="@font/mapoflowerisland"
+                    android:textFontWeight="900"
                     android:textSize="30dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/font_sub_color"
                     android:text="당신이 관심을 가질만한 문화를 추천해드립니다."
+                    android:fontFamily="@font/mapoflowerisland"
+                    android:textFontWeight="900"
                     android:textSize="15dp"/>
 
                 <!--추천하는 문화 박스-->
