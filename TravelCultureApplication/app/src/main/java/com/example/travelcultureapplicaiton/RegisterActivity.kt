@@ -1,5 +1,6 @@
 package com.example.travelcultureapplicaiton
 
+import android.app.Application
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -89,8 +90,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.inputNewpassword.text.toString()
             MyApplication.auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
-                    binding.newEmail.text.clear()
-                    binding.inputNewpassword.text.clear()
+
                     if (task.isSuccessful) {
                         MyApplication.auth.currentUser?.sendEmailVerification()
                             ?.addOnCompleteListener { sendTask ->
@@ -117,10 +117,12 @@ class RegisterActivity : AppCompatActivity() {
 
     // 유저 정보 저장
     private fun saveStore(){ // 이메일, 닉네임, 지역, 카테고리
+        Log.d("appTest","유저 테이블 생성하기")
         val data = mapOf(
-            "email" to MyApplication.email, // read, write 권한을 가지도록 하기위해 설정
+            "email" to binding.newEmail.text.toString(), // read, write 권한을 가지도록 하기위해 설정
             "nickname" to binding.inputName.text.toString(),
             "residence" to binding.residence.text.toString(),
+
             //"category" to 여러 개의 값을 받는다.
 
         )
@@ -133,5 +135,7 @@ class RegisterActivity : AppCompatActivity() {
             .addOnFailureListener{
                 Log.d("mobileApp", "data save error")
             }
+        binding.newEmail.text.clear()
+        binding.inputNewpassword.text.clear()
     }
 }
