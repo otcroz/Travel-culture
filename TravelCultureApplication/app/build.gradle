@@ -49,6 +49,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1' //리사이클러뷰
     implementation 'com.kakao.sdk:v2-user:2.9.0' // 카카오 로그인
 
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'    // 지도
+    implementation 'com.google.android.gms:play-services-location:19.0.1'    // 지도
+
     // 파이어베이스 관련 implementation
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
