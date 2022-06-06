@@ -1,19 +1,24 @@
 package com.example.travelcultureapplicaiton
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.example.travelcultureapplicaiton.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    lateinit var sharedPreference: SharedPreferences
 
     private val fl: FrameLayout by lazy {
         findViewById(R.id.nav_host_fragment_activity_main)
@@ -26,10 +31,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 전체 화면 설정 (SDK 버전 고려)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {// >=30
+            window.setDecorFitsSystemWindows(false) // 전체화면으로 설정
+            val controller = window.insetsController
+            if(controller != null){
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }else{
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+
         setSupportActionBar(binding.toolbar)
 
+        // 설정 화면
+        changeTheme()
+
+
         // 프래그먼트 연결하기
-        supportFragmentManager.beginTransaction().add(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
+        // 화면 뜨는 것의 원인, 이거 어떻게 해결 안되나? 처음 실행할 때만 실행되도록..
+        //supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
 
         // 바텀 내비게이션 아이템 클릭 리스너 설정
         bn.setOnItemSelectedListener{
@@ -45,8 +70,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() { // 액티비티가 중단되었다가 다시 실행될 때 호출
+        super.onResume()
+        bn.setOnItemSelectedListener{
+            replaceFragment(
+                when (it.itemId){
+                    R.id.navigation_home -> HomeFragment()
+                    R.id.navigation_map ->MapFragment()
+                    R.id.navigation_list -> ListFragment()
+                    else -> CourseFragment()
+                }
+            )
+            true
+        }
+        changeTheme()
+
+    }
+
+    private fun changeTheme(){
+        // 설정 화면
+        sharedPreference = PreferenceManager.getDefaultSharedPreferences(this)
+        val isThemeOn = sharedPreference.getBoolean("set_night", true)
+        if (isThemeOn){
+            Log.d("appTest", "day")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else{
+            Log.d("appTest", "night")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
 
     private fun replaceFragment(fragment: Fragment) {
+        Log.d("appTest", "${fragment}")
         supportFragmentManager.beginTransaction().replace(fl.id, fragment).commit()
     }
 

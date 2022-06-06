@@ -37,7 +37,4 @@
             app:key="set_night"
             app:title="야간 모드 설정" />
     </PreferenceCategory>
-
-
-
 </PreferenceScreen>
