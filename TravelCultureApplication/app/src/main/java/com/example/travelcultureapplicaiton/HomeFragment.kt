@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // 유저 정보 업로드(이메일, 추후에 닉네임으로 변경)
-        //binding.username.text = arguments?.getString("data").toString()
+        //binding.username.text =
 
         return binding.root
     }

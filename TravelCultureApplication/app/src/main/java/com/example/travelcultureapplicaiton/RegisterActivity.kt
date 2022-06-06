@@ -124,7 +124,6 @@ class RegisterActivity : AppCompatActivity() {
             "residence" to binding.residence.text.toString(),
 
             //"category" to 여러 개의 값을 받는다.
-
         )
 
         MyApplication.db.collection("user") // 이미지, 글에 대한 정보가 이 테이블에 저장

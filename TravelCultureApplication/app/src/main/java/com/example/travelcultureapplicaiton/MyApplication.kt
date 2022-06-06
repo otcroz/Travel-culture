@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import com.kakao.sdk.common.KakaoSdk
+
 
 class MyApplication : MultiDexApplication() {
     companion object {
@@ -28,6 +30,7 @@ class MyApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         auth = Firebase.auth
+        KakaoSdk.init(this, "cb840c86473294c4985cbd9d9da13202") // 네이티브 앱 키를 넣어준다.
 
         db = FirebaseFirestore.getInstance()
         storage = Firebase.storage

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.example.travelcultureapplicaiton.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kakao.sdk.common.util.Utility
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +32,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val keyHash = Utility.getKeyHash(this)
+        Log.d("appTest", keyHash)
+
+        // 프래그먼트 연결하기
+        // 화면 뜨는 것의 원인, 이거 어떻게 해결 안되나? 처음 실행할 때만 실행되도록..
+        //supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
+
 
         // 전체 화면 설정 (SDK 버전 고려)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {// >=30
@@ -52,9 +61,7 @@ class MainActivity : AppCompatActivity() {
         changeTheme()
 
 
-        // 프래그먼트 연결하기
-        // 화면 뜨는 것의 원인, 이거 어떻게 해결 안되나? 처음 실행할 때만 실행되도록..
-        //supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
+
 
         // 바텀 내비게이션 아이템 클릭 리스너 설정
         bn.setOnItemSelectedListener{
@@ -84,7 +91,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
         changeTheme()
-
     }
 
     private fun changeTheme(){
@@ -92,17 +98,14 @@ class MainActivity : AppCompatActivity() {
         sharedPreference = PreferenceManager.getDefaultSharedPreferences(this)
         val isThemeOn = sharedPreference.getBoolean("set_night", true)
         if (isThemeOn){
-            Log.d("appTest", "day")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else{
-            Log.d("appTest", "night")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 
 
     private fun replaceFragment(fragment: Fragment) {
-        Log.d("appTest", "${fragment}")
         supportFragmentManager.beginTransaction().replace(fl.id, fragment).commit()
     }
 
