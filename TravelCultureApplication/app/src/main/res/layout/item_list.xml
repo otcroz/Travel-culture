@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--레이아웃에서 layout_height 설정 중요! 리스트에서 여러 항목이 보이게 하기 위해 => wrap_content-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_margin="8dp">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="140dp"
+        android:background="#000000"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:background="#ffddaa"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:id="@+id/item_locate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"
+            android:background="#ffddaa"
+            android:layout_marginLeft="20dp"/>
+
+        <TextView
+            android:id="@+id/item_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:background="#ffddaa"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+</LinearLayout>
