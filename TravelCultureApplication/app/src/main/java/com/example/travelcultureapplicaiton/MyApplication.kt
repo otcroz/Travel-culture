@@ -16,8 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyApplication : MultiDexApplication() {
     companion object {
-        // 네트워크 연결(공공데이터)
-        var networkServiceXml : NetworkService
+        // 네트워크 연결(행사 정보)
+        var networkServiceXml : NetworkService // 검색
         val parser = TikXml.Builder().exceptionOnUnreadXml(false).build()
         val retrofitXml: Retrofit
             get() = Retrofit.Builder()
@@ -25,7 +25,7 @@ class MyApplication : MultiDexApplication() {
                 .addConverterFactory(TikXmlConverterFactory.create(parser))
                 .build()
         init{
-            networkServiceXml = retrofitXml.create(NetworkService::class.java)
+            networkServiceXml = retrofitXml.create(NetworkService::class.java) // 검색
         }
 
         // 파이어베이스

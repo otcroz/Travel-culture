@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.travelcultureapplicaiton.databinding.ItemListBinding
 
 class MyViewHolder(val binding: ItemListBinding): RecyclerView.ViewHolder(binding.root) // 뷰 홀더에 대한 생성
@@ -19,9 +20,11 @@ class MyAdapter(val context: Context, val datas:MutableList<myItem>?):RecyclerVi
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as MyViewHolder).binding
         val model = datas!![position]
-        //binding.itemImage.src = model.firstimage2
+        Glide.with(binding.root)
+            .load(model.firstimage2)
+            .override(150,200)
+            .into(binding.itemImage)
         binding.itemTitle.text = model.title
-        binding.itemStartdate.text = model.eventstartdate
         binding.itemAddr.text = model.addr1
     }
 

@@ -42,11 +42,11 @@ data class myItems(
 @Xml
 data class myItem(
     @PropertyElement
+    val firstimage2: String?,
+    @PropertyElement
     val title: String?,
     @PropertyElement
     val addr1: String?,
-    @PropertyElement
-    val eventstartdate: String?,
 ){
-    constructor() : this( null, null, null)
+    constructor() : this( null,null, null)
 }
