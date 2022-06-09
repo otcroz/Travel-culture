@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.travelcultureapplicaiton.databinding.FragmentListBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,13 +51,46 @@ class ListFragment : Fragment() {
 
         initViewPager() // 뷰 페이저 적용하기
 
+        // 탭 바 적용하기
+        val tabLayoutTextArray = arrayOf("거리순","검색","카테고리")
+        TabLayoutMediator(binding.tab1, binding.viewpager){
+                tab, position -> tab.text = tabLayoutTextArray[position]
+        }.attach()
+        
+        //탭 바 이벤트
+        binding.tab1.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                //탭을 이동할 때 이미지 보여줌
+                when(tab?.text){
+                    // 이미지 적용하기
+                    "거리순" -> Glide.with(binding.root)
+                        .load("https://t1.daumcdn.net/cfile/blog/272CB84E534BF57928")
+                        .override(150,200)
+                        .into(binding.listpageImage)
+                    "검색" -> Glide.with(binding.root)
+                        .load("@drawable/ic_splash_logo")
+                        .override(150,200)
+                        .into(binding.listpageImage)
+                    "카테고리" -> Glide.with(binding.root)
+                        .load("@drawable/ic_splash_logo")
+                        .override(150,200)
+                        .into(binding.listpageImage)
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
 
         return binding.root
     }
 
     private fun initViewPager(){
         binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.viewpager.offscreenPageLimit = 3;
+        //binding.viewpager.offscreenPageLimit = 3;
         binding.viewpager.adapter = FragmentListAdapter(activity as MainActivity)
     }
 
