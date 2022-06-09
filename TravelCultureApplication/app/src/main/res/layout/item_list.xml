@@ -7,6 +7,8 @@
     android:padding="16dp"
     android:layout_margin="8dp">
     <ImageView
+        android:id="@+id/item_image"
+        android:src="@drawable/ic_splash_logo"
         android:layout_width="100dp"
         android:layout_height="140dp"
         android:background="#000000"/>
@@ -23,7 +25,7 @@
             android:background="#ffddaa"
             android:layout_marginLeft="20dp"/>
         <TextView
-            android:id="@+id/item_locate"
+            android:id="@+id/item_addr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -32,7 +34,7 @@
             android:layout_marginLeft="20dp"/>
 
         <TextView
-            android:id="@+id/item_"
+            android:id="@+id/item_startdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

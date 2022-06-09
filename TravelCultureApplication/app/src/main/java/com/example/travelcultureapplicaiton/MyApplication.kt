@@ -8,10 +8,27 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.kakao.sdk.common.KakaoSdk
+import com.tickaroo.tikxml.TikXml
+import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MyApplication : MultiDexApplication() {
     companion object {
+        // 네트워크 연결(공공데이터)
+        var networkServiceXml : NetworkService
+        val parser = TikXml.Builder().exceptionOnUnreadXml(false).build()
+        val retrofitXml: Retrofit
+            get() = Retrofit.Builder()
+                .baseUrl("http://api.visitkorea.or.kr/")
+                .addConverterFactory(TikXmlConverterFactory.create(parser))
+                .build()
+        init{
+            networkServiceXml = retrofitXml.create(NetworkService::class.java)
+        }
+
+        // 파이어베이스
         lateinit var auth: FirebaseAuth
         var email: String? = null
         lateinit var db: FirebaseFirestore

@@ -1,13 +1,18 @@
 package com.example.travelcultureapplicaiton
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelcultureapplicaiton.databinding.FragmentListBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,15 +43,51 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentListBinding.inflate(inflater, container, false)
+        // 데이터를 가져온다.
+        val returnType = arguments?.getString("returnType")
+        val call : Call<responseInfo> = MyApplication.networkServiceXml.getXmlList(
+            "CDNRFWzcqVNIQ++7vj9QCBoCKvsk5fAEh/nT6XXO+49SR7SN2qEWcX9vTorvWC1Zsgn1VGftwEZslejzAUs/ww==",
+            1,
+            10,
+            "ETC",
+            "TravelCultureApp"
+        )
 
-        val datas = mutableListOf<String>() //9 개의 문자열을 갖는 datas 생성
-        for(i in 1..9){
-            datas.add("item $i")
-        }
-        
-        // 리사이클러뷰 적용
-        binding.mainRecyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.mainRecyclerView.adapter = MyAdapter(datas)
+        //서버로부터 전달받은 내용 처리
+        call?.enqueue(object: Callback<responseInfo> {
+            override fun onResponse(call: Call<responseInfo>, response: Response<responseInfo>) {
+                Log.d("appTest", "$call / $response")
+                if(response.isSuccessful){
+                    Log.d("appTest", "$response")
+                    binding.listInfoRecyclerView.layoutManager = LinearLayoutManager(activity)
+                    binding.listInfoRecyclerView.adapter = MyAdapter(activity as Context, response.body()!!.body!!.items!!.item)
+                }
+            }
+
+            override fun onFailure(call: Call<responseInfo>, t: Throwable) {
+                Log.d("appTest", "onFailure")
+                Log.d("appTest", "$t")
+            }
+
+        })
+
+        //검색 메뉴에 대한 코드
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    Log.d("appTest", "SearchVies Text is changed : $s")
+                    return false
+                }
+            }
+        // 검색메뉴에 대한 코드
+        binding.menuSearch.setOnQueryTextListener(searchViewTextListener)
+
 
         return binding.root
     }
