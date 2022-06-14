@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_margin="16dp"
+    android:background="@drawable/content_rectangle_box">
+    <ImageView
+        android:id="@+id/item_image_locate"
+        android:src="@drawable/ic_splash_logo"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:background="#ffffff"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/item_title_locate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@color/sub_color"
+            android:text="행사명"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:id="@+id/item_addr_locate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/font_sub_color"
+            android:text="주소"
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp"/>
+
+        <TextView
+            android:id="@+id/item_startdate_locate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/font_sub_color"
+            android:text="시작일"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,18 +4,18 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NetworkService {
-    @GET("openapi/service/rest/KorService/searchKeyword")
+interface NetworkLocationService{
+    @GET("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList")
 
-    fun getXmlList(
+    fun getLocationXmlList(
         @Query("serviceKey") apiKey: String?,
         @Query("pageNo") page:Int,
         @Query("numOfRows") pageSize: Int,
         @Query("MobileOS") OSType: String,
         @Query("MobileApp") appServiceName: String,
         @Query("arrange") arrange: String,
-        @Query("keyword") keyword: String,
-    ) : Call<responseInfo>
+        @Query("mapX") mapX: Double,
+        @Query("mapY") mapY: Double,
+        @Query("radius") radius: Int,
+    ) : Call<responseInfo_locate>
 }
-
-

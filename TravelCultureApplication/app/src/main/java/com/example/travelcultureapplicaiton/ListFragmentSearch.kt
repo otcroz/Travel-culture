@@ -72,8 +72,8 @@ class ListFragmentSearch : Fragment() {
                             Log.d("appTest", "$call / $response")
                             if(response.isSuccessful){
                                 Log.d("appTest", "$response")
-                                binding.listInfoRecyclerView.layoutManager = LinearLayoutManager(activity)
-                                binding.listInfoRecyclerView.adapter = MyAdapter(activity as Context, response.body()!!.body!!.items!!.item)
+                                binding.listSearchRecyclerView.layoutManager = LinearLayoutManager(activity)
+                                binding.listSearchRecyclerView.adapter = MyAdapter(activity as Context, response.body()!!.body!!.items!!.item)
                             }
                         }
 

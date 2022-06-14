@@ -18,6 +18,7 @@ class MyApplication : MultiDexApplication() {
     companion object {
         // 네트워크 연결(행사 정보)
         var networkServiceXml : NetworkService // 검색
+        var networkService_location : NetworkLocationService // 위치기반
         val parser = TikXml.Builder().exceptionOnUnreadXml(false).build()
         val retrofitXml: Retrofit
             get() = Retrofit.Builder()
@@ -26,6 +27,7 @@ class MyApplication : MultiDexApplication() {
                 .build()
         init{
             networkServiceXml = retrofitXml.create(NetworkService::class.java) // 검색
+            networkService_location = retrofitXml.create(NetworkLocationService::class.java) // 위치기반
         }
 
         // 파이어베이스

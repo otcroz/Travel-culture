@@ -102,19 +102,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleApiClient.ConnectionCa
     override fun onMapReady(p0: GoogleMap) {
         googleMap = p0 // 구글맵을 변수에 넣는다.
         moveMap(37.568256, 126.897240)
-        /*val latLng = LatLng(37.568256, 126.897240)
-        val position: CameraPosition = CameraPosition.Builder() // 카메라를 움직여서 설정해놓은 위치로 지도를 이동하도록 한다.
-            .target(latLng)
-            .zoom(16f)
-            .build()
-        googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(position))
-
-        // 마커 추가하기
-        val markerOp = MarkerOptions()
-        markerOp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        markerOp.position(latLng)
-        markerOp.title("월드컵경기장")
-        googleMap?.addMarker(markerOp)*/
     }
 
     // 카메라를 이동시키는 함수
