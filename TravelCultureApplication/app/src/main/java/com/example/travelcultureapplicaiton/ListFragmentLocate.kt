@@ -92,38 +92,6 @@ class ListFragmentLocate : Fragment(), GoogleApiClient.ConnectionCallbacks,
             apiClient.connect() // 정보 가져옴
         }
 
-        // 데이터를 가져온다.
-        val returnType = arguments?.getString("returnType")
-        call = MyApplication.networkService_location.getLocationXmlList(
-            "CDNRFWzcqVNIQ++7vj9QCBoCKvsk5fAEh/nT6XXO+49SR7SN2qEWcX9vTorvWC1Zsgn1VGftwEZslejzAUs/ww==",
-            1,
-            10,
-            "ETC",
-            "TravelCultureApp",
-            "O",
-            latitude,
-            longitude,
-            1000
-        )
-
-        //서버로부터 전달받은 내용 처리
-        call?.enqueue(object: Callback<responseInfo_locate> {
-            override fun onResponse(call: Call<responseInfo_locate>, response: Response<responseInfo_locate>) {
-                if(response.isSuccessful){
-                    Log.d("appTest", "$response")
-                    binding.listLocateRecyclerView.layoutManager = LinearLayoutManager(activity)
-                    binding.listLocateRecyclerView.adapter = AdapterLocation(activity as Context, response.body()!!.body!!.items!!.item)
-                }
-            }
-
-            override fun onFailure(call: Call<responseInfo_locate>, t: Throwable) {
-                Log.d("appTest", "onFailure")
-                Log.d("appTest", "$t")
-            }
-
-        })
-
-
         return binding.root
     }
 
@@ -148,12 +116,42 @@ class ListFragmentLocate : Fragment(), GoogleApiClient.ConnectionCallbacks,
     }
 
     private fun callData(latitude: Double, longitude: Double){
+        // 데이터를 가져온다.
+        val returnType = arguments?.getString("returnType")
+        call = MyApplication.networkService_location.getLocationXmlList(
+            "CDNRFWzcqVNIQ++7vj9QCBoCKvsk5fAEh/nT6XXO+49SR7SN2qEWcX9vTorvWC1Zsgn1VGftwEZslejzAUs/ww==",
+            1,
+            10,
+            "ETC",
+            "TravelCultureApp",
+            "O",
+            longitude,
+            latitude,
+            5000
+        )
+        Log.d("appTest", "$latitude, $longitude")
 
+        //서버로부터 전달받은 내용 처리
+        call?.enqueue(object: Callback<responseInfo_locate> {
+            override fun onResponse(call: Call<responseInfo_locate>, response: Response<responseInfo_locate>) {
+                if(response.isSuccessful){
+                    Log.d("appTest", "$response")
+                    binding.listLocateRecyclerView.layoutManager = LinearLayoutManager(activity)
+                    binding.listLocateRecyclerView.adapter = AdapterLocation(activity as Context, response.body()!!.body!!.items!!.item)
+                }
+            }
+
+            override fun onFailure(call: Call<responseInfo_locate>, t: Throwable) {
+                Log.d("appTest", "onFailure")
+                Log.d("appTest", "$t")
+            }
+
+        })
     }
 
     override fun onConnected(p0: Bundle?) {
         // 퍼미션 다시 확인
-        Log.d("mobileApp", "onConnected")
+        Log.d("appTest", "onConnected")
         if(ContextCompat.checkSelfPermission(activity as MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED){
             providerClient.lastLocation.addOnSuccessListener(
                 activity as MainActivity,
@@ -162,7 +160,8 @@ class ListFragmentLocate : Fragment(), GoogleApiClient.ConnectionCallbacks,
                         p0?.let{
                             latitude = p0.latitude
                             longitude = p0.longitude
-                            Log.d("mobileApp", "lat: $latitude, lng: $longitude")
+                            Log.d("appTest", "lat: $latitude, lng: $longitude")
+                            callData(latitude, longitude)
                         }
                     }
                 }
