@@ -6,15 +6,15 @@ import com.tickaroo.tikxml.annotation.Xml
 
 // 불러올 공공데이터의 정보
 @Xml(name = "response")
-data class responseInfo(
+data class responseInfo_detail(
     @Element
-    val header: Header,
+    val header: Header_detail,
     @Element
-    val body : myBody
+    val body : myBody_detail
 )
 
 @Xml(name="header")
-data class Header(
+data class Header_detail(
     @PropertyElement
     val resultCode: Int,
     @PropertyElement
@@ -22,9 +22,9 @@ data class Header(
 )
 
 @Xml(name="body")
-data class myBody(
+data class myBody_detail(
     @Element
-    val items : myItems,
+    val items : myItems_detail,
     @PropertyElement
     val numOfRows: Int,
     @PropertyElement
@@ -34,21 +34,22 @@ data class myBody(
 )
 
 @Xml(name="items")
-data class myItems(
+data class myItems_detail(
     @Element(name="item")
-    val item: MutableList<myItem>
+    val item: MutableList<myItem_detail>
 )
 
 @Xml
-data class myItem(
+data class myItem_detail(
     @PropertyElement
-    val firstimage2: String?,
+    val firstimage: String?,
     @PropertyElement
     val title: String?,
     @PropertyElement
     val addr1: String?,
     @PropertyElement
-    val contentid: Int?,
+    val overview: String?,
 ){
-    constructor() : this( null,null, null, null)
+    constructor() : this( null, null,null, null)
 }
+

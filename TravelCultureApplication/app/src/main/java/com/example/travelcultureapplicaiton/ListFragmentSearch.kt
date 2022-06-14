@@ -77,7 +77,11 @@ class ListFragmentSearch : Fragment() {
                                 searchAdapter.setItemClickListener(object: MyAdapter.OnItemClickListener{
                                     override fun onClick(v: View, position: Int) {
                                         // 클릭 시 이벤트 작성
-                                        val intent = Intent(activity as MainActivity, DetailActivity::class.java)
+                                        val intent = Intent(activity, DetailActivity::class.java)
+                                        val uniqueContentNum =  response.body()!!.body!!.items!!.item
+                                        Log.d("appTest", "${uniqueContentNum[position].contentid}")
+                                        //contentID 넘기기
+                                        intent.putExtra("contentID", uniqueContentNum[position].contentid)
                                         startActivity(intent)
                                     }
                                 })
@@ -90,8 +94,6 @@ class ListFragmentSearch : Fragment() {
                         }
 
                     })
-
-
 
                     return false
                 }

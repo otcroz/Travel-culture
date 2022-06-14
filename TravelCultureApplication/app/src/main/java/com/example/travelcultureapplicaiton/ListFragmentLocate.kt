@@ -2,6 +2,7 @@ package com.example.travelcultureapplicaiton
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -136,8 +137,24 @@ class ListFragmentLocate : Fragment(), GoogleApiClient.ConnectionCallbacks,
             override fun onResponse(call: Call<responseInfo_locate>, response: Response<responseInfo_locate>) {
                 if(response.isSuccessful){
                     Log.d("appTest", "$response")
+                    val locateAdapter = AdapterLocation(activity as Context, response.body()!!.body!!.items!!.item)
                     binding.listLocateRecyclerView.layoutManager = LinearLayoutManager(activity)
-                    binding.listLocateRecyclerView.adapter = AdapterLocation(activity as Context, response.body()!!.body!!.items!!.item)
+                    binding.listLocateRecyclerView.adapter = locateAdapter
+
+                    locateAdapter.setItemClickListener(object: AdapterLocation.OnItemClickListener{
+                        override fun onClick(v: View, position: Int) {
+                            // 클릭 시 이벤트 작성
+                            val intent = Intent(activity, DetailActivity::class.java)
+                            val uniqueContentNum =  response.body()!!.body!!.items!!.item
+                            Log.d("appTest", "${uniqueContentNum[position].contentid}")
+                            //contentID 넘기기
+                            intent.putExtra("contentID", uniqueContentNum[position].contentid)
+                            startActivity(intent)
+
+                        }
+                    })
+
+
                 }
             }
 

@@ -47,7 +47,9 @@ data class myItem_locate(
     val title: String?,
     @PropertyElement
     val addr1: String?,
+    @PropertyElement
+    val contentid: Int?,
 ){
-    constructor() : this( null,null, null)
+    constructor() : this( null,null, null, null)
 }
 
