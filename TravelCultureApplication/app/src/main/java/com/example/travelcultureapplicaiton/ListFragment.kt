@@ -52,7 +52,7 @@ class ListFragment : Fragment() {
         initViewPager() // 뷰 페이저 적용하기
 
         // 탭 바 적용하기
-        val tabLayoutTextArray = arrayOf("거리순","검색","카테고리")
+        val tabLayoutTextArray = arrayOf("거리순","검색")
         TabLayoutMediator(binding.tab1, binding.viewpager){
                 tab, position -> tab.text = tabLayoutTextArray[position]
         }.attach()
@@ -68,10 +68,6 @@ class ListFragment : Fragment() {
                         .override(150,200)
                         .into(binding.listpageImage)
                     "검색" -> Glide.with(binding.root)
-                        .load("@drawable/ic_splash_logo")
-                        .override(150,200)
-                        .into(binding.listpageImage)
-                    "카테고리" -> Glide.with(binding.root)
                         .load("@drawable/ic_splash_logo")
                         .override(150,200)
                         .into(binding.listpageImage)
