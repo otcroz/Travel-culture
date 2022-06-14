@@ -50,11 +50,6 @@ class ListFragmentSearch : Fragment() {
             object : SearchView.OnQueryTextListener {
                 //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
                 override fun onQueryTextSubmit(s: String): Boolean {
-                    return false
-                }
-
-                //텍스트 입력/수정시에 호출
-                override fun onQueryTextChange(s: String): Boolean {
                     // 데이터를 가져온다.
                     val returnType = arguments?.getString("returnType")
                     call = MyApplication.networkServiceXml.getXmlList(
@@ -83,6 +78,14 @@ class ListFragmentSearch : Fragment() {
                         }
 
                     })
+
+
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+
                     Log.d("appTest", "SearchVies Text is changed : $s")
                     return false
                 }
