@@ -32,7 +32,7 @@ class MyApplication : MultiDexApplication() {
             networkSetvice_detail = retrofitXml.create(NetworkDetailService::class.java) // 상세 정보
         }
 
-        // 파이어베이스
+        // 파이어베이스: 정보
         lateinit var auth: FirebaseAuth
         var email: String? = null
         lateinit var db: FirebaseFirestore
