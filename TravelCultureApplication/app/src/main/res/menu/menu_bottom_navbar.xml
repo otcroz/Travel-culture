@@ -31,6 +31,6 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_auto_awesome_24"
         android:fontFamily="@font/mapoflowerisland"
-        android:title="문화 코스" />
+        android:title="문화 여행" />
 
 </menu>
