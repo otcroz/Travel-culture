@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val keyHash = Utility.getKeyHash(this)
-        Log.d("appTest", keyHash)
+        //val keyHash = Utility.getKeyHash(this)
+        //Log.d("appTest", keyHash)
 
         // 프래그먼트 연결하기
         // 화면 뜨는 것의 원인, 이거 어떻게 해결 안되나? 처음 실행할 때만 실행되도록..
@@ -60,9 +60,6 @@ class MainActivity : AppCompatActivity() {
         // 설정 화면
         changeTheme()
 
-
-
-
         // 바텀 내비게이션 아이템 클릭 리스너 설정
         bn.setOnItemSelectedListener{
             replaceFragment(
@@ -74,6 +71,34 @@ class MainActivity : AppCompatActivity() {
                 }
             )
             true
+        }
+    }
+
+    override fun onStart() { // mainActivity에서 다른 activity로 이동하여 다른 작업 후 다시 돌아올 때 실행하는 메서드
+        super.onStart()
+        if(MyApplication.checkAuth() || MyApplication.email != null){ // 검증된 이메일인지 확인
+            setSupportActionBar(binding.toolbar)
+
+            // 설정 화면
+            changeTheme()
+
+            // 바텀 내비게이션 아이템 클릭 리스너 설정
+            bn.setOnItemSelectedListener{
+                replaceFragment(
+                    when (it.itemId){
+                        R.id.navigation_home -> HomeFragment()
+                        R.id.navigation_map -> MapFragment()
+                        R.id.navigation_list -> ListFragment()
+                        else -> CourseFragment()
+                    }
+                )
+                true
+            }
+
+        } else{
+            finish()
+            val intent = Intent(this, SplashActivity::class.java)
+            startActivity(intent)
         }
     }
 
