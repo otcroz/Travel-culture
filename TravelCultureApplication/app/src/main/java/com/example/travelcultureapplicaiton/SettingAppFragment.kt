@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.preference.*
 import com.example.travelcultureapplicaiton.Constant.Companion.NOTIFICATION_ID
+import com.example.travelcultureapplicaiton.MyApplication.Companion.db
 import com.kakao.sdk.user.UserApiClient
 import java.util.*
 
@@ -44,9 +45,12 @@ class SettingAppFragment : PreferenceFragmentCompat() {
 
         //설정값 가져오기
         alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager?
+
+        val nicknamePreference: EditTextPreference? = findPreference("username")
         val favoriteCategory: MultiSelectListPreference? = findPreference("category2")
         val checkLocation: ListPreference? = findPreference("location1")
         val logoutPreference: Preference? = findPreference("logout_mode")
+        val withdrawPreference: Preference? = findPreference("withdraw_mode")
         val locate_alarmPreference: SwitchPreference? = findPreference("noti_sound1")
         val category_alarmPreference: SwitchPreferenceCompat? = findPreference("noti_sound2")
 
@@ -58,6 +62,10 @@ class SettingAppFragment : PreferenceFragmentCompat() {
         } else{
             cancelAlarm()
         }
+
+        // 닉네임
+        var updateNickname = EditTextPreference.SimpleSummaryProvider.getInstance()
+        nicknamePreference?.summaryProvider = updateNickname
 
         // 거주지역
         checkLocation?.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
@@ -76,7 +84,7 @@ class SettingAppFragment : PreferenceFragmentCompat() {
             }
 
         // 로그아웃 이벤트 핸들러
-        val eventHandler = object : DialogInterface.OnClickListener{
+        val eventLogout = object : DialogInterface.OnClickListener{
             override fun onClick(p0: DialogInterface?, p1: Int) {
                 if(p1 == DialogInterface.BUTTON_POSITIVE){
                     // 앱 로그아웃
@@ -91,11 +99,12 @@ class SettingAppFragment : PreferenceFragmentCompat() {
                         }
                     }
                     activity?.supportFragmentManager
-                    //(activity as SettingActivity).finishAffinity();
                     val fragmentManager: FragmentManager = activity!!.supportFragmentManager
                     (activity as SettingActivity).finish()
+                    val intent = Intent(activity, SplashActivity::class.java)
+                    startActivity(intent)
 
-                    // 저장된 로그인 정보 삭제
+                    // 저장된 로그인 정보 삭제(프리퍼런스에 저장된 값 지우기)
                 } else if(p1 == DialogInterface.BUTTON_NEGATIVE)
                     Log.d("appTest", "negative button")
             }
@@ -108,8 +117,59 @@ class SettingAppFragment : PreferenceFragmentCompat() {
                 setTitle("앱 로그아웃")
                 setIcon(android.R.drawable.ic_dialog_info)
                 setMessage("정말 로그아웃하시겠습니까?")
-                setPositiveButton("네", eventHandler)
-                setNegativeButton("아니오", eventHandler)
+                setPositiveButton("네", eventLogout)
+                setNegativeButton("아니오", null)
+                setCancelable(false)
+                show()
+            }.setCanceledOnTouchOutside(false) // 메시지 값 출력
+            true
+        }
+
+        // 회원탈퇴 이벤트 핸들러
+        val eventWithDraw = object : DialogInterface.OnClickListener{
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+                if(p1 == DialogInterface.BUTTON_POSITIVE){
+                    // 1. DB 정보 삭제
+                    Log.d("appTest", "${MyApplication.auth?.currentUser?.uid.toString()}")
+                    db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
+                        .delete()
+                        .addOnSuccessListener {
+                            Log.d("appTest", "DocumentSnapshot successfully deleted!")
+                            // 2. 앱 탈퇴
+                            MyApplication.email = null
+                            MyApplication.auth.currentUser!!.delete()
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Toast.makeText(activity, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
+                                    }
+                                    else{
+                                        Toast.makeText(activity, "회원탈퇴 실패", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            // 화면 이동
+                            activity?.supportFragmentManager
+                            val fragmentManager: FragmentManager = activity!!.supportFragmentManager
+                            val intent = Intent(activity, SplashActivity::class.java)
+                            startActivity(intent)
+                        }
+                        .addOnFailureListener { e -> Log.w("appTest", "Error deleting document", e) }
+
+                    
+                } else if(p1 == DialogInterface.BUTTON_NEGATIVE)
+                    Log.d("appTest", "negative button")
+            }
+        }
+
+
+        // 회원 탈퇴
+        withdrawPreference?.setOnPreferenceClickListener { preference ->
+            Log.d("appTest","setOnPreferenceClickListener")
+            AlertDialog.Builder(activity).run {
+                setTitle("앱 회원 탈퇴")
+                setIcon(android.R.drawable.ic_dialog_info)
+                setMessage("정말 탈퇴하시겠습니까?")
+                setPositiveButton("네", eventWithDraw)
+                setNegativeButton("아니오", null)
                 setCancelable(false)
                 show()
             }.setCanceledOnTouchOutside(false) // 메시지 값 출력

@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() { // mainActivity에서 다른 activity로 이동하여 다른 작업 후 다시 돌아올 때 실행하는 메서드
         super.onStart()
         if(MyApplication.checkAuth() || MyApplication.email != null){ // 검증된 이메일인지 확인
+            Log.d("appTest", "${MyApplication.checkAuth()}  ${MyApplication.email}")
             setSupportActionBar(binding.toolbar)
 
             // 설정 화면

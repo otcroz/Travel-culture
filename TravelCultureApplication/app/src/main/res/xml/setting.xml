@@ -41,5 +41,8 @@
         <Preference
             app:key="logout_mode"
             app:title="로그아웃" />
+        <Preference
+            app:key="withdraw_mode"
+            app:title="회원 탈퇴" />
     </PreferenceCategory>
 </PreferenceScreen>
