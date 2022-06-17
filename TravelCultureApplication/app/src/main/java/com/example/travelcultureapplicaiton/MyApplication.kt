@@ -3,8 +3,6 @@ package com.example.travelcultureapplicaiton
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -22,6 +20,8 @@ class MyApplication : MultiDexApplication() {
         var networkServiceXml : NetworkService // 검색
         var networkService_location : NetworkLocationService // 위치기반
         var networkSetvice_detail: NetworkDetailService // 등록 정보(detail)
+        var networkSetvice_area: NetworkAreaService // 지역
+
         val parser = TikXml.Builder().exceptionOnUnreadXml(false).build()
         val retrofitXml: Retrofit
             get() = Retrofit.Builder()
@@ -32,6 +32,7 @@ class MyApplication : MultiDexApplication() {
             networkServiceXml = retrofitXml.create(NetworkService::class.java) // 검색
             networkService_location = retrofitXml.create(NetworkLocationService::class.java) // 위치기반
             networkSetvice_detail = retrofitXml.create(NetworkDetailService::class.java) // 상세 정보
+            networkSetvice_area = retrofitXml.create(NetworkAreaService::class.java) // 지역
         }
 
         // 파이어베이스: 정보

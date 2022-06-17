@@ -1,5 +1,7 @@
 package com.example.travelcultureapplicaiton
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,7 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelcultureapplicaiton.databinding.FragmentHomeBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +31,7 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
 
     lateinit var binding : FragmentHomeBinding
+    private lateinit var call: Call<responseInfo_area>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,19 +48,65 @@ class HomeFragment : Fragment() {
         // 바인딩 설정
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        val datas = mutableListOf<String>() //9 개의 문자열을 갖는 datas 생성
-        for(i in 1..9){
-            datas.add("item $i")
-        }
+        var areaNum = 1
+        var categoryNum = "A0202"
 
-        //리사이클러 뷰 생성
-        binding.homeRecommandRecyclerView.layoutManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false);
-        binding.homeRecommandRecyclerView.adapter = AdapterHomeRecommand(datas)
+        callData(areaNum, categoryNum)
 
         // 유저 정보 업로드(이메일, 추후에 닉네임으로 변경)
         //binding.username.text =
 
         return binding.root
+    }
+
+    private fun callData(areaNum: Int, categoryNum: String){
+        val returnType = arguments?.getString("returnType")
+        call = MyApplication.networkSetvice_area.getAreaXmlList(
+            "CDNRFWzcqVNIQ++7vj9QCBoCKvsk5fAEh/nT6XXO+49SR7SN2qEWcX9vTorvWC1Zsgn1VGftwEZslejzAUs/ww==",
+            1,
+            10,
+            "ETC",
+            "TravelCultureApp",
+            "O",
+            areaNum,
+            "A02",
+            categoryNum,
+            12,
+        )
+        //서버로부터 전달받은 내용 처리
+        call?.enqueue(object: Callback<responseInfo_area> {
+            override fun onResponse(call: Call<responseInfo_area>, response: Response<responseInfo_area>) {
+                Log.d("appTest", "$call / $response")
+                if(response.isSuccessful){
+                    Log.d("appTest", "$response")
+                    val areaAdapter = AdapterHomeRecommand(activity as Context, response.body()!!.body!!.items!!.item)
+                    binding.homeRecommandRecyclerView.layoutManager =  GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false);
+                    binding.homeRecommandRecyclerView.adapter = areaAdapter
+
+                    // 리사이클러뷰 이벤트 처리
+                    areaAdapter.setItemClickListener(object: AdapterHomeRecommand.OnItemClickListener{
+                        override fun onClick(v: View, position: Int) {
+                            // 클릭 시 이벤트 작성
+                            val uniqueContent = response.body()!!.body!!.items!!.item
+                            Log.d("appTest", "${uniqueContent[position]!!.contentid}")
+
+                            val uniqueContentNum = uniqueContent[position]!!.contentid
+
+                            val intent = Intent(activity, DetailActivity::class.java)
+                            //contentID 넘기기
+                            intent.putExtra("contentID", uniqueContentNum)
+                            startActivity(intent)
+                        }
+                    })
+                }
+            }
+
+            override fun onFailure(call: Call<responseInfo_area>, t: Throwable) {
+                Log.d("appTest", "onFailure")
+                Log.d("appTest", "$t")
+            }
+
+        })
     }
 
     companion object {
