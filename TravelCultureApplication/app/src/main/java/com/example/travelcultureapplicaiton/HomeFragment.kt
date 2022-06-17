@@ -1,10 +1,12 @@
 package com.example.travelcultureapplicaiton
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.travelcultureapplicaiton.databinding.FragmentHomeBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,6 +24,8 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var binding : FragmentHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +38,17 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentHomeBinding.inflate(inflater, container, false)
+        // 바인딩 설정
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val datas = mutableListOf<String>() //9 개의 문자열을 갖는 datas 생성
+        for(i in 1..9){
+            datas.add("item $i")
+        }
+
+        //리사이클러 뷰 생성
+        binding.homeRecommandRecyclerView.layoutManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false);
+        binding.homeRecommandRecyclerView.adapter = AdapterHomeRecommand(datas)
 
         // 유저 정보 업로드(이메일, 추후에 닉네임으로 변경)
         //binding.username.text =
