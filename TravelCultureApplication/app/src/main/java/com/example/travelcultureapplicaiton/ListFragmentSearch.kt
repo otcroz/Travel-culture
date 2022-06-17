@@ -71,6 +71,7 @@ class ListFragmentSearch : Fragment() {
                             if(response.isSuccessful){
                                 Log.d("appTest", "$response")
                                 val searchAdapter = MyAdapter(activity as Context, response.body()!!.body!!.items!!.item)
+
                                 binding.listSearchRecyclerView.layoutManager = LinearLayoutManager(activity)
                                 binding.listSearchRecyclerView.adapter = searchAdapter
 
@@ -90,6 +91,7 @@ class ListFragmentSearch : Fragment() {
                         }
 
                         override fun onFailure(call: Call<responseInfo>, t: Throwable) {
+                            Toast.makeText(context,"해당하는 검색 결과가 없습니다.",  Toast.LENGTH_SHORT).show()
                             Log.d("appTest", "onFailure")
                             Log.d("appTest", "$t")
                         }
