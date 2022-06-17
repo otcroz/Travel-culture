@@ -41,7 +41,6 @@
         android:padding="16dp"
         android:background="@drawable/input_rectangle_box"
         android:hint="새 이메일"
-        android:fontFamily="@font/mapoflowerisland"
         android:inputType="textWebEmailAddress"
         android:textSize="20dp"
         android:elevation="4dp" />
@@ -55,7 +54,6 @@
         android:padding="16dp"
         android:background="@drawable/input_rectangle_box"
         android:hint="새 비밀번호: 6자 이상 입력해주세요."
-        android:fontFamily="@font/mapoflowerisland"
         android:inputType="textPassword"
         android:textSize="20dp"
         android:elevation="4dp" />
@@ -69,26 +67,25 @@
         android:padding="16dp"
         android:background="@drawable/input_rectangle_box"
         android:hint="비밀번호 확인"
-        android:fontFamily="@font/mapoflowerisland"
         android:inputType="textPassword"
         android:textSize="20dp"
         android:elevation="4dp" />
 
-    <EditText
+    <Spinner
         android:id="@+id/residence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="15dp"
-        android:padding="16dp"
+        android:padding="5dp"
+        android:spinnerMode="dropdown"
         android:background="@drawable/input_rectangle_box"
         android:hint="거주 지역"
-        android:inputType="text"
         android:textSize="20dp"
         android:visibility="gone"
         android:elevation="4dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/favorite_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,7 +94,6 @@
         android:padding="16dp"
         android:background="@drawable/input_rectangle_box"
         android:hint="관심 분야"
-        android:inputType="text"
         android:textSize="20dp"
         android:visibility="gone"
         android:elevation="4dp" />
