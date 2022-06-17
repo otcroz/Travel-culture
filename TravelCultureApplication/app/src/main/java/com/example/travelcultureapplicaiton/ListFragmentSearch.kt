@@ -61,6 +61,7 @@ class ListFragmentSearch : Fragment() {
                         "ETC",
                         "TravelCultureApp",
                         "O",
+                        12,
                         s
                     )
                     //서버로부터 전달받은 내용 처리

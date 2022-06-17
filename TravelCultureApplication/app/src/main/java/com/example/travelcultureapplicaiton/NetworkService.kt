@@ -14,6 +14,7 @@ interface NetworkService {
         @Query("MobileOS") OSType: String,
         @Query("MobileApp") appServiceName: String,
         @Query("arrange") arrange: String,
+        @Query("contentTypeId") contentTypeId: Int,
         @Query("keyword") keyword: String,
     ) : Call<responseInfo>
 }
