@@ -32,7 +32,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp">
                         <ImageView
-                            android:id="@+id/puppy_profile_image"
+                            android:id="@+id/user_profile_image"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/white"
@@ -153,22 +153,27 @@
                     android:padding="16dp">
                     <!--이미지-->
                     <ImageView
+                        android:id="@+id/rec_home_image"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@color/purple_500" />
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/corner_all_radius"/>
                     <!--텍스트-->
                         <TextView
+                            android:id="@+id/rec_home_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="문화 이름"
                             android:textSize="20dp"/>
                         <TextView
+                            android:id="@+id/rec_home_locate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="문화 장소" />
 
                     <TextView
+                        android:id="@+id/rec_home_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"

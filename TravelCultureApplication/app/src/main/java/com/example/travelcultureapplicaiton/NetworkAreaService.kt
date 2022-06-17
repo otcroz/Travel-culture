@@ -16,8 +16,8 @@ interface NetworkAreaService {
         @Query("arrange") arrange: String,
         @Query("areaCode") areaCode: Int,
         @Query("cat1") cat1: String,
-        @Query("cat2") cat2: String,
+        @Query("cat2") cat2: String?,
         @Query("contentTypeId") contentTypeId: Int,
 
-    ) : Call<responseInfo_area>
+        ) : Call<responseInfo_area>
 }
