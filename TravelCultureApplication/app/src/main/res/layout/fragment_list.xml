@@ -20,12 +20,13 @@
             android:layout_height="250dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
             <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:expandedTitleMarginBottom="50dp"
-                app:expandedTitleMarginStart="50dp">
+                app:expandedTitleMarginBottom="65dp"
+                app:expandedTitleMarginStart="16dp">
                 <!--?attr/actionBarSize 접히는 정도에 따라 툴바의 높이도 다르게-->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -39,9 +40,8 @@
                 <ImageView
                     android:id="@+id/listpage_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_splash_logo"
+                    android:layout_height="250dp"
+                    android:scaleType="fitXY"
                     app:layout_collapseMode="parallax" />
 
                 <com.google.android.material.tabs.TabLayout
@@ -49,9 +49,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom"
-                    app:tabMode="scrollable"
+                    app:tabMode="fixed"
+                    app:tabGravity="fill"
                     app:layout_collapseMode="pin"
-                    app:tabTextColor="#ff00ff"/>
+                    app:tabSelectedTextColor="@color/sub_color"
+                    app:tabTextColor="@color/font_sub_color"/>
                 <!--scaleType: 이미지 크기를 앱 바에 크기에 맞추도록 조정-->
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

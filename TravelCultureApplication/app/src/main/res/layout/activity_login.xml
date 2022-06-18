@@ -123,14 +123,4 @@
         android:textColor="#664500"
         android:backgroundTint="#FFCC4D"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        android:text="페이스북으로 로그인"
-        android:fontFamily="@font/mapoflowerisland"
-        android:layout_marginHorizontal="16dp"
-        android:textSize="18dp"
-        android:backgroundTint="#226699"/>
-
 </LinearLayout>

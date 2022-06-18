@@ -5,43 +5,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
     tools:context=".AddPostActivity">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/addImageView"
-        android:scaleType="fitXY" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/addEditView"
-        android:hint="내용을 입력해주세요"
-        android:gravity="top" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/addImageBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:background="@drawable/corner_all_radius"
-            android:backgroundTint="@color/sub_color"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1" />
-        <Button
-            android:id="@+id/addPostRecommend"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="게시하기"
-            android:background="@drawable/corner_all_radius" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/addImageView"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:id="@+id/post_area_location"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal"
+            android:background="@drawable/input_rectangle_box"
+            android:layout_margin="10dp"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_pin_drop_24" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/add_residence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="2dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:hint="장소" />
+                <TextView
+                    android:id="@+id/add_locate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:hint="위치" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/addEditView"
+            android:hint="내용을 입력해주세요"
+            android:gravity="top"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/addImageBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:background="@drawable/corner_all_radius"
+                android:backgroundTint="@color/sub_color"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/addPostRecommend"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="게시하기"
+                android:background="@drawable/corner_all_radius" />
+        </LinearLayout>
     </LinearLayout>
+
+    <!--contentID 저장-->
+    <TextView
+        android:id="@+id/store_contentID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="contentID"
+        android:visibility="gone"/>
 
 
 </LinearLayout>
