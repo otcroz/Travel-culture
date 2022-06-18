@@ -41,24 +41,7 @@ class MainActivity : AppCompatActivity() {
         //supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
 
 
-        // 전체 화면 설정 (SDK 버전 고려)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {// >=30
-            window.setDecorFitsSystemWindows(false) // 전체화면으로 설정
-            val controller = window.insetsController
-            if(controller != null){
-                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        }else{
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
-
         setSupportActionBar(binding.toolbar)
-
-        // 설정 화면
-        changeTheme()
 
         // 바텀 내비게이션 아이템 클릭 리스너 설정
         bn.setOnItemSelectedListener{
@@ -69,9 +52,11 @@ class MainActivity : AppCompatActivity() {
                     R.id.navigation_list -> ListFragment()
                     else -> CourseFragment()
                 }
+
             )
             true
         }
+        bn.selectedItemId = R.id.navigation_home
     }
 
     override fun onStart() { // mainActivity에서 다른 activity로 이동하여 다른 작업 후 다시 돌아올 때 실행하는 메서드
@@ -79,9 +64,6 @@ class MainActivity : AppCompatActivity() {
         if(MyApplication.checkAuth() || MyApplication.email != null){ // 검증된 이메일인지 확인
             Log.d("appTest", "${MyApplication.checkAuth()}  ${MyApplication.email}")
             setSupportActionBar(binding.toolbar)
-
-            // 설정 화면
-            changeTheme()
 
             // 바텀 내비게이션 아이템 클릭 리스너 설정
             bn.setOnItemSelectedListener{
@@ -115,18 +97,6 @@ class MainActivity : AppCompatActivity() {
                 }
             )
             true
-        }
-        changeTheme()
-    }
-
-    private fun changeTheme(){
-        // 설정 화면
-        sharedPreference = PreferenceManager.getDefaultSharedPreferences(this)
-        val isThemeOn = sharedPreference.getBoolean("set_night", true)
-        if (isThemeOn){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

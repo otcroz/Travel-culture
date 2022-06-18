@@ -23,21 +23,8 @@
             android:summary="관심분야" />
     </PreferenceCategory>
     <PreferenceCategory
-        app:key="notification"
-        app:title="알림 설정">
-        <SwitchPreference
-            app:key="noti_sound1"
-            app:title="지역별 문화 프로그램 추천 알림" />
-        <SwitchPreferenceCompat
-            app:key="noti_sound2"
-            app:title="오늘의 문화 프로그램 추천 알림" />
-    </PreferenceCategory>
-    <PreferenceCategory
         app:key="etc"
-        app:title="기타">
-        <SwitchPreference
-            app:key="set_night"
-            app:title="야간 모드 설정" />
+        app:title="회원 관리">
         <Preference
             app:key="logout_mode"
             app:title="로그아웃" />
