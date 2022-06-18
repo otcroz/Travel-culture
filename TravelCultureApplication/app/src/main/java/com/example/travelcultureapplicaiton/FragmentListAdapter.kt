@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class FragmentListAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
     val fragments: List<Fragment>
     init {
-        fragments = listOf(ListFragmentLocate(), ListFragmentSearch()) // 2개의 프레그먼트 등록
+        fragments = listOf(ListFragmentLocate(), ListFragmentSearch())
     }
     override fun getItemCount(): Int {
         return fragments.size

@@ -56,14 +56,7 @@ class HomeFragment : Fragment() {
         // 바인딩 설정
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // 지역 문화 정보
-        getMyRegionCulture()
-        
-        // 문화 추천 정보
-        getCategory()
 
-        // 유저 정보 업로드(이메일, 추후에 닉네임으로 변경)
-        //binding.username.text =
 
         return binding.root
     }
@@ -72,6 +65,12 @@ class HomeFragment : Fragment() {
         super.onStart()
         // 사용자 값 업데이트
         updateUserInfo()
+
+        // 지역 문화 정보
+        getMyRegionCulture()
+
+        // 문화 추천 정보
+        getCategory()
     }
 
     // 사용자 정보 업데이트
@@ -130,40 +129,40 @@ class HomeFragment : Fragment() {
     // 유저 카테고리, 지역 값 가져오기
     private fun getCategory() {
         lateinit var randomCategory: String
-            val random = Random
-            val categoryNum = CoroutineScope(Dispatchers.Default).async {
-                MyApplication.db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
-                    .get()
-                    .addOnSuccessListener { result ->
-                        val resultItem = result.toObject(UserDataModel::class.java)
-                        // 지역 값과 카테고리 값 가져오기
-                        categoryList = resultItem!!.category!!
+        val random = Random
+        val categoryNum = CoroutineScope(Dispatchers.Default).async {
+            MyApplication.db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
+                .get()
+                .addOnSuccessListener { result ->
+                    val resultItem = result.toObject(UserDataModel::class.java)
+                    // 지역 값과 카테고리 값 가져오기
+                    categoryList = resultItem!!.category!!
 
-                        // 지역 값 가져오기
-                        var userArea = resultItem!!.residence.toString()
-                        val indexArea = resources.getStringArray(R.array.set_location).indexOf(userArea)
-                        val userAreaNum = resources.getStringArray(R.array.set_location_value)[indexArea]
+                    // 지역 값 가져오기
+                    var userArea = resultItem!!.residence.toString()
+                    val indexArea = resources.getStringArray(R.array.set_location).indexOf(userArea)
+                    val userAreaNum = resources.getStringArray(R.array.set_location_value)[indexArea]
 
-                        // 랜덤 숫자 뽑기
-                        val randomNum = random.nextInt(categoryList.size)
-                        Log.d("appTest", "randomNum: $randomNum")
-                        // 사용자 카테고리 배열에서 string 값 뽑아내기
-                        val selUserCategory = categoryList[randomNum]
-                        Log.d("appTest", "selUserCategory: $selUserCategory")
-                        // string값 가지고 category에서 index값 찾기
-                        val index = resources.getStringArray(R.array.set_category).indexOf(selUserCategory)
-                        Log.d("appTest", "index: $index")
-                        // index값을 category_value에 넣어서 값 반환하기
-                        randomCategory = resources.getStringArray(R.array.set_category_value)[index]
-                        Log.d("appTest", "randomCategory: $randomCategory")
+                    // 랜덤 숫자 뽑기
+                    val randomNum = random.nextInt(categoryList.size)
+                    Log.d("appTest", "randomNum: $randomNum")
+                    // 사용자 카테고리 배열에서 string 값 뽑아내기
+                    val selUserCategory = categoryList[randomNum]
+                    Log.d("appTest", "selUserCategory: $selUserCategory")
+                    // string값 가지고 category에서 index값 찾기
+                    val index = resources.getStringArray(R.array.set_category).indexOf(selUserCategory)
+                    Log.d("appTest", "index: $index")
+                    // index값을 category_value에 넣어서 값 반환하기
+                    randomCategory = resources.getStringArray(R.array.set_category_value)[index]
+                    Log.d("appTest", "randomCategory: $randomCategory")
 
-                        // 값 전달하기
-                        callDataSummary(userAreaNum!!.toInt(), randomCategory)
-                    }
-                    .addOnFailureListener{
-                        randomCategory = null.toString()
-                        Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
-                    }
+                    // 값 전달하기
+                    callDataSummary(userAreaNum!!.toInt(), randomCategory)
+                }
+                .addOnFailureListener{
+                    randomCategory = null.toString()
+                    Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
