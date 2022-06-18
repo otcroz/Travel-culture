@@ -45,6 +45,7 @@ class SettingAppFragment : PreferenceFragmentCompat() {
 
         //설정값 가져오기
         alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager?
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity as SettingActivity)
 
         val nicknamePreference: EditTextPreference? = findPreference("username")
         val favoriteCategory: MultiSelectListPreference? = findPreference("category2")
@@ -62,15 +63,14 @@ class SettingAppFragment : PreferenceFragmentCompat() {
         } else{
             cancelAlarm()
         }
-
-        // 닉네임
+        
+        // 초기값 설정
         var updateNickname = EditTextPreference.SimpleSummaryProvider.getInstance()
         nicknamePreference?.summaryProvider = updateNickname
 
-        // 거주지역
-        checkLocation?.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        var updateCheck = ListPreference.SimpleSummaryProvider.getInstance()
+        checkLocation?.summaryProvider = updateCheck
 
-        // 카테고리
         favoriteCategory?.summaryProvider =
             Preference.SummaryProvider<MultiSelectListPreference> { preference ->
                 val array = mutableSetOf("")
@@ -79,9 +79,50 @@ class SettingAppFragment : PreferenceFragmentCompat() {
                     "카테고리를 설정해주세요."
                 } else {
                     Log.d("appTest", "$t1")
+                    val convertList = t1.toList()
                     "$t1"
                 }
             }
+        true
+
+        // 닉네임
+        nicknamePreference?.setOnPreferenceChangeListener { preference, newValue ->
+            Log.d("appTest", "preference: $preference newValue: $newValue")
+            var updateNickname = EditTextPreference.SimpleSummaryProvider.getInstance()
+            nicknamePreference?.summaryProvider = updateNickname
+            db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString()).update("nickname", newValue)
+
+            true
+        }
+
+        // 거주지역
+        checkLocation?.setOnPreferenceChangeListener { preference, newValue ->
+            Log.d("appTest", "preference: $preference newValue: $newValue")
+            var updateCheck = ListPreference.SimpleSummaryProvider.getInstance()
+            checkLocation?.summaryProvider = updateCheck
+            db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString()).update("residence", newValue)
+
+            true
+        }
+
+        // 카테고리
+        favoriteCategory?.setOnPreferenceChangeListener { preference, newValue ->
+            Log.d("appTest", "preference: $preference newValue: $newValue")
+            favoriteCategory?.summaryProvider =
+                Preference.SummaryProvider<MultiSelectListPreference> { preference ->
+                    val array = mutableSetOf("")
+                    val t1 = preference.getPersistedStringSet(array)
+                    if (t1.toString().isEmpty()) {
+                        "카테고리를 설정해주세요."
+                    } else {
+                        Log.d("appTest", "$t1")
+                        val convertList = t1.toList()
+                        db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString()).update("category", convertList)
+                        "$t1"
+                    }
+                }
+            true
+        }
 
         // 로그아웃 이벤트 핸들러
         val eventLogout = object : DialogInterface.OnClickListener{

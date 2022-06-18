@@ -13,14 +13,14 @@
             app:key="location1"
             app:title="나의 거주 지역 수정하기"
             app:entries="@array/set_location"
-            android:entryValues="@array/set_location_value"
-            android:summary="거주지역: " />
+            android:entryValues="@array/set_location"
+            android:summary="거주지역" />
         <MultiSelectListPreference
             app:key="category2"
             app:title="나의 관심 분야 수정하기"
             app:entries="@array/set_category"
-            android:entryValues="@array/set_category_value"
-            android:summary="관심분야: " />
+            android:entryValues="@array/set_category"
+            android:summary="관심분야" />
     </PreferenceCategory>
     <PreferenceCategory
         app:key="notification"
