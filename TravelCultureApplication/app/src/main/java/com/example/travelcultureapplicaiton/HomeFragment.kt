@@ -68,6 +68,41 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        // 사용자 값 업데이트
+        updateUserInfo()
+    }
+
+    // 사용자 정보 업데이트
+    private fun updateUserInfo(){
+        // 사용자 지역값 가져오기
+        MyApplication.db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
+            .get()
+            .addOnSuccessListener { result ->
+                val resultItem = result.toObject(UserDataModel::class.java)
+                // 이름 반영하기
+                val userNickname = resultItem!!.nickname.toString()
+                binding.username.text = userNickname
+                // 거주지역 반영하기
+                val userResidence = resultItem!!.residence.toString()
+                binding.userResidence.text = userResidence
+
+                // 카테고리 반영하기
+                val userCategory = resultItem!!.category
+                var temp: String? = ""
+                if (userCategory != null) {
+                    for(i in userCategory)
+                        temp += "$i "
+                }
+                Log.d("appTest", "temp: $temp")
+                binding.userCategory.text = temp
+            }
+            .addOnFailureListener{
+                Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
+            }
+    }
+
     // 지역 문화 리사이클러 뷰
     private fun getMyRegionCulture(){
         // 사용자 지역값 가져오기
