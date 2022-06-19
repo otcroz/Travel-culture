@@ -2,10 +2,10 @@ package com.example.travelcultureapplicaiton
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.travelcultureapplicaiton.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
@@ -13,9 +13,11 @@ import com.kakao.sdk.user.UserApiClient
 
 class LoginActivity : AppCompatActivity() {
 
+    lateinit var binding : ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 회원가입 페이지 이동
@@ -40,11 +42,17 @@ class LoginActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             if (MyApplication.checkAuth()) {
                                 MyApplication.email = email
+
+                                // sharedPreferences에 uid 저장
+                                val sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE) // test 이름의 기본모드 설정
+                                val editor = sharedPreferences.edit() //sharedPreferences를 제어할 editor를 선언
+                                editor.putString("uid", MyApplication.auth?.currentUser?.uid.toString()) // key,value 형식으로 저장
+                                editor.commit() //최종 커밋. 커밋을 해야 저장이 된다.
+
+
                                 // 메인 페이지로 이동
                                 val intent = Intent(this, MainActivity::class.java)
-                                //intent.putExtra("userData", email) // 해당하는 닉네임(현재는 이메일로 대체)
                                 startActivity(intent)
-
                                 finish()
                             } else {
                                 Toast.makeText(baseContext, "이메일 인증이 되지 않았습니다.", Toast.LENGTH_SHORT)
@@ -88,10 +96,28 @@ class LoginActivity : AppCompatActivity() {
                                     "\n이메일: ${user.kakaoAccount?.email}" +
                                     "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
                                     "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+
+                            // 카카오 회원 전용 회원가입 페이지로 이동
+//                            val intent = Intent(this, RegisterKakaoActivity::class.java)
+//                            intent.putExtra("uid", user.id)
+//                            intent.putExtra("email", user.kakaoAccount?.email)
+//                            intent.putExtra("nickname", user.kakaoAccount?.profile?.nickname)
+//                            intent.putExtra("profileImage", user.kakaoAccount?.profile?.thumbnailImageUrl)
+//                            startActivity(intent)
+
+                            // sharedPreferences에 uid 저장
+                            if(user.id != null){ 
+                                val sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE) // test 이름의 기본모드 설정
+                                val editor = sharedPreferences.edit() //sharedPreferences를 제어할 editor를 선언
+                                editor.putString("uid", user.id.toString()) // key,value 형식으로 저장
+                                editor.commit() //최종 커밋. 커밋을 해야 저장이 된다.
+                                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                            
                             // 메인 페이지로 이동
                             val intent = Intent(this, MainActivity::class.java)
-                            //intent.putExtra("userData", email) // 해당하는 닉네임(현재는 이메일로 대체)
                             startActivity(intent)
+                            finish()
                         }
                     }
                 }
@@ -102,7 +128,5 @@ class LoginActivity : AppCompatActivity() {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
             }
         }
-
-        // 페이스북 간편 로그인
     }
 }

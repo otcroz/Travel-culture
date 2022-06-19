@@ -56,7 +56,7 @@ class RegisterActivity : AppCompatActivity() {
                 setTitle("멀티 아이템 목록 선택")
                 setIcon(android.R.drawable.ic_dialog_info)
 
-                setMultiChoiceItems(dialogCategory, booleanArrayOf(false, false, false, false),
+                setMultiChoiceItems(dialogCategory, booleanArrayOf(false, false, false, false, false),
                     object : DialogInterface.OnMultiChoiceClickListener {
                         override fun onClick(p0: DialogInterface?, p1: Int, p2: Boolean) {
                             if(p2){
@@ -167,6 +167,8 @@ class RegisterActivity : AppCompatActivity() {
 
                                 } else {
                                     Toast.makeText(baseContext, "메일발송 실패", Toast.LENGTH_SHORT).show()
+
+                                    val intent = Intent(this, MainActivity::class.java)
                                     startActivity(intent)
                                 }
                             }

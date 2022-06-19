@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -59,9 +60,17 @@ class MainActivity : AppCompatActivity() {
         bn.selectedItemId = R.id.navigation_home
     }
 
+    private fun getUID(): String? {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("uid", MODE_PRIVATE)
+        val uid = sharedPreferences.getString("uid", "")
+
+        return uid
+    }
+
     override fun onStart() { // mainActivity에서 다른 activity로 이동하여 다른 작업 후 다시 돌아올 때 실행하는 메서드
         super.onStart()
-        if(MyApplication.checkAuth() || MyApplication.email != null){ // 검증된 이메일인지 확인
+        val uid = getUID()
+        if(MyApplication.checkAuth() || MyApplication.email != null || uid != null){ // 검증된 유저인지 확인
             Log.d("appTest", "${MyApplication.checkAuth()}  ${MyApplication.email}")
             setSupportActionBar(binding.toolbar)
 

@@ -1,25 +1,27 @@
 package com.example.travelcultureapplicaiton
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.travelcultureapplicaiton.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.random.Random
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,8 +58,6 @@ class HomeFragment : Fragment() {
         // 바인딩 설정
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
-
         return binding.root
     }
 
@@ -73,97 +73,115 @@ class HomeFragment : Fragment() {
         getCategory()
     }
 
+    private fun getUID(): String? {
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("uid", MODE_PRIVATE)
+        val uid = sharedPreferences.getString("uid", "")
+
+        return uid
+    }
+
+
     // 사용자 정보 업데이트
     private fun updateUserInfo(){
         // 사용자 지역값 가져오기
-        MyApplication.db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
-            .get()
-            .addOnSuccessListener { result ->
-                val resultItem = result.toObject(UserDataModel::class.java)
-                // 이름 반영하기
-                val userNickname = resultItem!!.nickname.toString()
-                binding.username.text = userNickname
-                // 거주지역 반영하기
-                val userResidence = resultItem!!.residence.toString()
-                binding.userResidence.text = userResidence
-
-                // 카테고리 반영하기
-                val userCategory = resultItem!!.category
-                var temp: String? = ""
-                if (userCategory != null) {
-                    for(i in userCategory)
-                        temp += "$i "
+        val uid = getUID()
+        Log.d("appTest", "$uid")
+        if (uid != null) {
+            MyApplication.db.collection("user").document(uid)
+                .get()
+                .addOnSuccessListener { result ->
+                    val resultItem = result.toObject(UserDataModel::class.java)
+                    // 이름 반영하기
+                    val userNickname = resultItem!!.nickname.toString()
+                    binding.username.text = userNickname
+                    Log.d("appTest", "userNickname: $userNickname")
+                    // 거주지역 반영하기
+                    val userResidence = resultItem!!.residence.toString()
+                    binding.userResidence.text = userResidence
+                    Log.d("appTest", "userResidence: $userResidence")
+                    // 카테고리 반영하기
+                    val userCategory = resultItem!!.category
+                    var temp: String? = ""
+                    if (userCategory != null) {
+                        for(i in userCategory)
+                            temp += "$i "
+                    }
+                    Log.d("appTest", "temp: $temp")
+                    binding.userCategory.text = temp
                 }
-                Log.d("appTest", "temp: $temp")
-                binding.userCategory.text = temp
-            }
-            .addOnFailureListener{
-                Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
-            }
+                .addOnFailureListener{
+                    Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     // 지역 문화 리사이클러 뷰
     private fun getMyRegionCulture(){
         // 사용자 지역값 가져오기
-        MyApplication.db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
-            .get()
-            .addOnSuccessListener { result ->
-                val resultItem = result.toObject(UserDataModel::class.java)
-                // 지역 값 가져오기
-                var userArea = resultItem!!.residence.toString()
-                // string값 가지고 locate에서 index값 찾기
-                val index = resources.getStringArray(R.array.set_location).indexOf(userArea)
-                Log.d("appTest", "index: $index")
-                // index값을 locate_value에 넣어서 값 반환하기
-                val userAreaNum = resources.getStringArray(R.array.set_location_value)[index]
-                Log.d("appTest", "userAreaNum: $userAreaNum")
+        val uid = getUID()
+        if (uid != null) {
+            MyApplication.db.collection("user").document(uid)
+                .get()
+                .addOnSuccessListener { result ->
+                    val resultItem = result.toObject(UserDataModel::class.java)
+                    // 지역 값 가져오기
+                    var userArea = resultItem!!.residence.toString()
+                    Log.d("appTest", "userArea: $userArea")
+                    // string값 가지고 locate에서 index값 찾기
+                    val index = resources.getStringArray(R.array.set_location).indexOf(userArea)
+                    Log.d("appTest", "index: $index")
+                    // index값을 locate_value에 넣어서 값 반환하기
+                    val userAreaNum = resources.getStringArray(R.array.set_location_value)[index]
+                    Log.d("appTest", "userAreaNum: $userAreaNum")
 
-                // 데이터 요청
-                callDataLocate(userAreaNum!!.toInt())
-            }
-            .addOnFailureListener{
-                Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
-            }
+                    // 데이터 요청
+                    callDataLocate(userAreaNum!!.toInt())
+                }
+                .addOnFailureListener{
+                    Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     // 유저 카테고리, 지역 값 가져오기
     private fun getCategory() {
         lateinit var randomCategory: String
         val random = Random
-        val categoryNum = CoroutineScope(Dispatchers.Default).async {
-            MyApplication.db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
-                .get()
-                .addOnSuccessListener { result ->
-                    val resultItem = result.toObject(UserDataModel::class.java)
-                    // 지역 값과 카테고리 값 가져오기
-                    categoryList = resultItem!!.category!!
+            val uid = getUID()
+            if (uid != null) {
+                MyApplication.db.collection("user").document(uid)
+                    .get()
+                    .addOnSuccessListener { result ->
+                        val resultItem = result.toObject(UserDataModel::class.java)
+                        // 지역 값과 카테고리 값 가져오기
+                        categoryList = resultItem!!.category!!
 
-                    // 지역 값 가져오기
-                    var userArea = resultItem!!.residence.toString()
-                    val indexArea = resources.getStringArray(R.array.set_location).indexOf(userArea)
-                    val userAreaNum = resources.getStringArray(R.array.set_location_value)[indexArea]
+                        // 지역 값 가져오기
+                        var userArea = resultItem!!.residence.toString()
+                        val indexArea = resources.getStringArray(R.array.set_location).indexOf(userArea)
+                        val userAreaNum = resources.getStringArray(R.array.set_location_value)[indexArea]
 
-                    // 랜덤 숫자 뽑기
-                    val randomNum = random.nextInt(categoryList.size)
-                    Log.d("appTest", "randomNum: $randomNum")
-                    // 사용자 카테고리 배열에서 string 값 뽑아내기
-                    val selUserCategory = categoryList[randomNum]
-                    Log.d("appTest", "selUserCategory: $selUserCategory")
-                    // string값 가지고 category에서 index값 찾기
-                    val index = resources.getStringArray(R.array.set_category).indexOf(selUserCategory)
-                    Log.d("appTest", "index: $index")
-                    // index값을 category_value에 넣어서 값 반환하기
-                    randomCategory = resources.getStringArray(R.array.set_category_value)[index]
-                    Log.d("appTest", "randomCategory: $randomCategory")
+                        // 랜덤 숫자 뽑기
+                        val randomNum = random.nextInt(categoryList.size)
+                        Log.d("appTest", "randomNum: $randomNum")
+                        // 사용자 카테고리 배열에서 string 값 뽑아내기
+                        val selUserCategory = categoryList[randomNum]
+                        Log.d("appTest", "selUserCategory: $selUserCategory")
+                        // string값 가지고 category에서 index값 찾기
+                        val index = resources.getStringArray(R.array.set_category).indexOf(selUserCategory)
+                        Log.d("appTest", "index: $index")
+                        // index값을 category_value에 넣어서 값 반환하기
+                        randomCategory = resources.getStringArray(R.array.set_category_value)[index]
+                        Log.d("appTest", "randomCategory: $randomCategory")
 
-                    // 값 전달하기
-                    callDataSummary(userAreaNum!!.toInt(), randomCategory)
-                }
-                .addOnFailureListener{
-                    randomCategory = null.toString()
-                    Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
-                }
-        }
+                        // 값 전달하기
+                        callDataSummary(userAreaNum!!.toInt(), randomCategory)
+                    }
+                    .addOnFailureListener{
+                        randomCategory = null.toString()
+                        Toast.makeText(activity as MainActivity,"서버 데이터 획득 실패",  Toast.LENGTH_SHORT).show()
+                    }
+            }
     }
 
     // 공공데이터 요청 함수: 사용자 추천
@@ -224,7 +242,7 @@ class HomeFragment : Fragment() {
         //서버로부터 전달받은 내용 처리
         call?.enqueue(object: Callback<responseInfo_area> {
             override fun onResponse(call: Call<responseInfo_area>, response: Response<responseInfo_area>) {
-                Log.d("appTest", "$call / $response")
+                Log.d("appTest", "onResponse area: $call / $response")
                 if(response.isSuccessful){
                     Log.d("appTest", "$response")
                     val areaAdapter = AdapterHomeRecommand(activity as Context, response.body()!!.body!!.items!!.item)
