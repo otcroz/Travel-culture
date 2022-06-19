@@ -49,7 +49,13 @@ data class myItem_locate(
     val addr1: String?,
     @PropertyElement
     val contentid: Int?,
+    @PropertyElement
+    val mapx: Double?,
+    @PropertyElement
+    val mapy: Double?,
+    @PropertyElement
+    val cat2: String?,
 ){
-    constructor() : this( null,null, null, null)
+    constructor() : this( null,null, null, null, null, null, null)
 }
 

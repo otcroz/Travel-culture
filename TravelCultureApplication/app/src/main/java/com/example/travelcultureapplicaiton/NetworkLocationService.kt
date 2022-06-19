@@ -14,6 +14,7 @@ interface NetworkLocationService{
         @Query("MobileOS") OSType: String,
         @Query("MobileApp") appServiceName: String,
         @Query("arrange") arrange: String,
+        @Query("contentTypeId") contentTypeId: Int,
         @Query("mapX") mapX: Double,
         @Query("mapY") mapY: Double,
         @Query("radius") radius: Int,
