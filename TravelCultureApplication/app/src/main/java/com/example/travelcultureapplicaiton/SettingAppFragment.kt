@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.AudioAttributes
@@ -78,7 +79,7 @@ class SettingAppFragment : PreferenceFragmentCompat() {
             Log.d("appTest", "preference: $preference newValue: $newValue")
             var updateNickname = EditTextPreference.SimpleSummaryProvider.getInstance()
             nicknamePreference?.summaryProvider = updateNickname
-            db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString()).update("nickname", newValue)
+            getUID()?.let { db.collection("user").document(it).update("nickname", newValue) }
 
             true
         }
@@ -88,7 +89,7 @@ class SettingAppFragment : PreferenceFragmentCompat() {
             Log.d("appTest", "preference: $preference newValue: $newValue")
             var updateCheck = ListPreference.SimpleSummaryProvider.getInstance()
             checkLocation?.summaryProvider = updateCheck
-            db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString()).update("residence", newValue)
+            getUID()?.let { db.collection("user").document(it).update("residence", newValue) }
 
             true
         }
@@ -105,7 +106,7 @@ class SettingAppFragment : PreferenceFragmentCompat() {
                     } else {
                         Log.d("appTest", "$t1")
                         val convertList = t1.toList()
-                        db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString()).update("category", convertList)
+                        getUID()?.let { db.collection("user").document(it).update("category", convertList) }
                         "$t1"
                     }
                 }
@@ -121,10 +122,10 @@ class SettingAppFragment : PreferenceFragmentCompat() {
                     MyApplication.email = null
                     UserApiClient.instance.logout { error ->
                         if(error != null){
-                            Toast.makeText(activity, "로그아웃 실패", Toast.LENGTH_SHORT).show()
+                            Log.d("appTest", "카카오톡 유저 로그아웃 실패")
                         }
                         else{
-                            Toast.makeText(activity, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+                            Log.d("appTest", "카카오톡 유저 로그아웃 성공")
                         }
                     }
                     activity?.supportFragmentManager
@@ -160,28 +161,29 @@ class SettingAppFragment : PreferenceFragmentCompat() {
                 if(p1 == DialogInterface.BUTTON_POSITIVE){
                     // 1. DB 정보 삭제
                     Log.d("appTest", "${MyApplication.auth?.currentUser?.uid.toString()}")
-                    db.collection("user").document(MyApplication.auth?.currentUser?.uid.toString())
-                        .delete()
-                        .addOnSuccessListener {
-                            Log.d("appTest", "DocumentSnapshot successfully deleted!")
-                            // 2. 앱 탈퇴
-                            MyApplication.email = null
-                            MyApplication.auth.currentUser!!.delete()
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        Toast.makeText(activity, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
+                    getUID()?.let {
+                        db.collection("user").document(it)
+                            .delete()
+                            .addOnSuccessListener {
+                                Log.d("appTest", "DocumentSnapshot successfully deleted!")
+                                // 2. 앱 탈퇴
+                                MyApplication.email = null
+                                MyApplication.auth.currentUser!!.delete()
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            Toast.makeText(activity, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
+                                        } else{
+                                            Toast.makeText(activity, "회원탈퇴 실패", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
-                                    else{
-                                        Toast.makeText(activity, "회원탈퇴 실패", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            // 화면 이동
-                            activity?.supportFragmentManager
-                            val fragmentManager: FragmentManager = activity!!.supportFragmentManager
-                            val intent = Intent(activity, SplashActivity::class.java)
-                            startActivity(intent)
-                        }
-                        .addOnFailureListener { e -> Log.w("appTest", "Error deleting document", e) }
+                                // 화면 이동
+                                activity?.supportFragmentManager
+                                val fragmentManager: FragmentManager = activity!!.supportFragmentManager
+                                val intent = Intent(activity, SplashActivity::class.java)
+                                startActivity(intent)
+                            }
+                            .addOnFailureListener { e -> Log.w("appTest", "Error deleting document", e) }
+                    }
 
                     
                 } else if(p1 == DialogInterface.BUTTON_NEGATIVE)
@@ -204,5 +206,14 @@ class SettingAppFragment : PreferenceFragmentCompat() {
             }.setCanceledOnTouchOutside(false) // 메시지 값 출력
             true
         }
+    }
+
+    private fun getUID(): String? {
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("uid",
+            Context.MODE_PRIVATE
+        )
+        val uid = sharedPreferences.getString("uid", "")
+
+        return uid
     }
 }

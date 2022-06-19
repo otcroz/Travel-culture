@@ -23,13 +23,24 @@
             android:summary="관심분야" />
     </PreferenceCategory>
     <PreferenceCategory
-        app:key="etc"
+        app:key="member"
         app:title="회원 관리">
         <Preference
             app:key="logout_mode"
-            app:title="로그아웃" />
+            app:title="로그아웃"
+            android:summary=""/>
         <Preference
             app:key="withdraw_mode"
-            app:title="회원 탈퇴" />
+            app:title="탈퇴하기"
+            android:summary="이메일로 회원가입한 유저만 가능합니다."/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="etc"
+        app:title="기타">
+        <Preference
+            app:key="app_version"
+            app:title="앱 버전"
+            android:summary="v.0.0.1"/>
     </PreferenceCategory>
 </PreferenceScreen>
