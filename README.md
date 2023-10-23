@@ -20,6 +20,22 @@
 | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
 |![image](https://github.com/otcroz/Travel-culture/assets/79989242/c1296e5e-5f0f-4f45-9bde-c4f5b9c39f19) | ![image](https://github.com/otcroz/Travel-culture/assets/79989242/3df33169-2467-4ead-9a4d-204de53a559c)|![image](https://github.com/otcroz/Travel-culture/assets/79989242/ea947ce4-eb32-48be-9148-a7372a323217)|![image](https://github.com/otcroz/Travel-culture/assets/79989242/9579457b-cfe0-4989-85f4-f8e678f84ba1)|![image](https://github.com/otcroz/Travel-culture/assets/79989242/d2b7dd5f-04b2-44f4-a95f-0ef7e6baa308)|![image](https://github.com/otcroz/Travel-culture/assets/79989242/7d26e97e-4bfd-4cf2-97a2-b69da4a1f125)|![image](https://github.com/otcroz/Travel-culture/assets/79989242/0cd31dd7-0447-411d-8c2e-f0294acad0f1)|
 
+* 유저 관리
+  * 회원가입 및 로그인
+  * 사용자 개인정보 수정
+  * 로그아웃, 탈퇴 기능
+* 가까운 지역문화 목록 확인 및 검색
+  * 사용자 지역문화를 거리순으로 확인
+  * 지역문화 이름 검색   
+* 내 주변 지역문화 확인
+  * 지도를 통해 주변 지역문화 확인
+  * 카테고리별로 다른 색의 마커로 나타냄 
+* 지역문화 추천 채널
+  * 지역 문화와 관광지를 체험하고 타 사용자에게 추천할 수 있는 채널
+  * 포스팅 기능 
+* 사용자가 설정한 지역의 지역문화 확인
+  * 사용자가 설정한 지역, 카테고리에 해당하는 지역문화 정보 추천 
+
 ### Tech Stack
 
 <img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white"/> <img src="https://img.shields.io/badge/firebase-FFCA28?style=flat-square&logo=firebase&logoColor=white"/>
