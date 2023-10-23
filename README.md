@@ -29,14 +29,17 @@
 
 ### Setup
 For building and running the application you need:
-- Python 3.10.0
-- Django 3.2.9
+- Adnroid API 33
+- Android 10.0(Q)
+- Android SDK Build-Tools 34
+- Android Emulator 32.1.13
+- Intel x86 Emulator Acelerator (HAXM Installer) 7.6.5
 
 ### Client
 
 ```
-$ git clone https://github.com/otcroz/ShoppingMall_WebPage_PhoneCase.git
-$ pip install -r requirements.txt
-$ python manage.py runserver
+$ git clone https://github.com/otcroz/Travel-culture.git
+Open the project through Android Studio.
+Run an application
 ```
-you can access to app service.
+you can access an app service.
